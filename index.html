@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy New Year 2026</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            color: white;
+            position: relative;
+        }
+
+        #backgroundVideo {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: 1;
+        }
+
+        .overlay-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 39, 0.5);
+            z-index: 2;
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 20px 0;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .buttons {
+            margin-top: 30px;
+        }
+
+        button {
+            font-size: 1.3em;
+            padding: 15px 40px;
+            margin: 0 15px;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+        }
+
+        .yes-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .no-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.6);
+        }
+
+        .rocket {
+            position: fixed;
+            font-size: 60px;
+            bottom: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5;
+        }
+
+        .firework {
+            position: fixed;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .message-popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            z-index: 100;
+            transition: transform 0.3s;
+            color: #333;
+        }
+
+        .message-popup.show {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .message-popup h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .message-popup p {
+            line-height: 1.8;
+            text-align: left;
+            font-size: 1.1em;
+        }
+
+        .envelope {
+            font-size: 80px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            animation: vibrate 0.5s infinite;
+            filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+        }
+
+        .envelope:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes vibrate {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-5px, -5px) rotate(-5deg); }
+            50% { transform: translate(5px, -5px) rotate(5deg); }
+            75% { transform: translate(-5px, 5px) rotate(-5deg); }
+        }
+
+        .envelope-text {
+            margin-top: 20px;
+            font-size: 1.3em;
+            animation: pulse 1.5s infinite;
+            color: #ffd700;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.05); }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 99;
+            display: none;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .close-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 10px 30px;
+            border-radius: 25px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 1em;
+        }
+
+        .final-video-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #finalVideo {
+            max-width: 100%;
+            max-height: 100%;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+    </style>
+</head>
+<body>
+    <!-- HERE ADD THE BACKGROUND VIDEO FILE -->
+    <video id="backgroundVideo" muted loop playsinline>
+        <source src="1st video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay-gradient"></div>
+
+    <div class="container" id="initialScreen">
+        <h1>Are you ready for 2026?</h1>
+        <div class="buttons">
+            <button class="yes-btn" onclick="handleYes()">Yes</button>
+            <button class="no-btn" onclick="handleNo()">No</button>
+        </div>
+    </div>
+
+    <div class="rocket hidden" id="rocket">🚀</div>
+
+    <div class="container hidden" id="envelopeScreen">
+        <div class="envelope" onclick="openMessage()">✉️</div>
+        <p class="envelope-text">Click to open me!</p>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="message-popup" id="messagePopup">
+        <h2>A Message for You 💝</h2>
+        <p id="messageText"></p>
+        <button class="close-btn" onclick="showFinalVideo()">Continue</button>
+    </div>
+
+    <div class="final-video-screen hidden" id="finalVideoScreen">
+        <!-- HERE ADD THE FINAL VIDEO FILE -->
+        <video id="finalVideo" controls>
+            <source src="NEW YEAR SUMU.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+
+    <!-- HERE ADD THE AUDIO FILE FOR MESSAGE READING -->
+    <audio id="messageAudio" preload="auto">
+        <source src="audio2.mp3" type="audio/mpeg">
+        Your browser does not support the audio tag.
+    </audio>
+
+    <script>
+        const message = "Since school days I know you and every time I had a thought of you or I see you it put a smile on my face instantly. Though our future is uncertain, maybe we won't get all the things that we have planned in the future, but I want you to be the part of my plan every single time. Don't worry, I am not saying to love me. I wrote all of this from my heart and just wanted you to hear my words. I am wishing you a very Happy New Year. May all your dreams come true and stay healthy all the time.";
+
+        function handleYes() {
+            startBackgroundMedia();
+            document.getElementById('initialScreen').classList.add('hidden');
+            launchRocket();
+            setTimeout(() => {
+                startFireworks(5000);
+                setTimeout(() => {
+                    document.getElementById('envelopeScreen').classList.remove('hidden');
+                }, 5000);
+            }, 2000);
+        }
+
+        function handleNo() {
+            startBackgroundMedia();
+            document.getElementById('initialScreen').classList.add('hidden');
+            showNoMessage();
+            setTimeout(() => {
+                startFireworks(5000);
+                setTimeout(() => {
+                    document.getElementById('envelopeScreen').classList.remove('hidden');
+                }, 5000);
+            }, 3000);
+        }
+
+        function startBackgroundMedia() {
+            const bgVideo = document.getElementById('backgroundVideo');
+            
+            bgVideo.muted = false;
+            bgVideo.play();
+        }
+
+        function showNoMessage() {
+            const tempMsg = document.createElement('div');
+            tempMsg.style.cssText = 'position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 15px; color: #333; font-size: 1.3em; z-index: 1000; box-shadow: 0 10px 40px rgba(0,0,0,0.5); max-width: 500px; text-align: center;';
+            tempMsg.innerHTML = "We can't change the past, but we can make our future better 🌟";
+            document.body.appendChild(tempMsg);
+            setTimeout(() => tempMsg.remove(), 2500);
+        }
+
+        function launchRocket() {
+            const rocket = document.getElementById('rocket');
+            rocket.classList.remove('hidden');
+            let pos = -100;
+            const interval = setInterval(() => {
+                pos -= 10;
+                rocket.style.bottom = Math.abs(pos) + 'px';
+                if (pos < -window.innerHeight - 100) {
+                    clearInterval(interval);
+                    rocket.classList.add('hidden');
+                }
+            }, 20);
+        }
+
+        function startFireworks(duration) {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500'];
+            const endTime = Date.now() + duration;
+            
+            const interval = setInterval(() => {
+                if (Date.now() > endTime) {
+                    clearInterval(interval);
+                    return;
+                }
+                createFirework();
+            }, 600);
+        }
+
+        function createFirework() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500'];
+            const x = Math.random() * window.innerWidth;
+            const y = Math.random() * window.innerHeight * 0.6;
+            
+            const firework = document.createElement('div');
+            firework.className = 'firework';
+            firework.style.left = x + 'px';
+            firework.style.top = y + 'px';
+            document.body.appendChild(firework);
+
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                
+                const angle = (Math.PI * 2 * i) / 30;
+                const velocity = 2 + Math.random() * 2;
+                const dx = Math.cos(angle) * velocity;
+                const dy = Math.sin(angle) * velocity;
+                
+                particle.style.left = '0px';
+                particle.style.top = '0px';
+                firework.appendChild(particle);
+
+                animateParticle(particle, dx, dy);
+            }
+
+            setTimeout(() => firework.remove(), 2000);
+        }
+
+        function animateParticle(particle, dx, dy) {
+            let x = 0, y = 0;
+            let opacity = 1;
+            const gravity = 0.1;
+            let vy = dy;
+
+            const interval = setInterval(() => {
+                x += dx;
+                y += vy;
+                vy += gravity;
+                opacity -= 0.02;
+
+                particle.style.transform = `translate(${x * 20}px, ${y * 20}px)`;
+                particle.style.opacity = opacity;
+
+                if (opacity <= 0) {
+                    clearInterval(interval);
+                }
+            }, 20);
+        }
+
+        function openMessage() {
+            // Show the message popup
+            document.getElementById('overlay').classList.add('show');
+            document.getElementById('messagePopup').classList.add('show');
+            
+            // Block background music by pausing the video
+            const bgVideo = document.getElementById('backgroundVideo');
+            bgVideo.pause();
+            
+            // Also pause final video to ensure no background music
+            const finalVideo = document.getElementById('finalVideo');
+            finalVideo.pause();
+            
+            // Start playing audio2.mp3
+            speakMessage();
+            
+            // Type out the message character by character
+            const messageText = document.getElementById('messageText');
+            messageText.textContent = '';
+            let index = 0;
+            const typingInterval = setInterval(() => {
+                if (index < message.length) {
+                    messageText.textContent += message[index];
+                    index++;
+                } else {
+                    clearInterval(typingInterval);
+                    // Message display is over, let audio finish
+                }
+            }, 50);
+        }
+
+        function speakMessage() {
+            const audio = document.getElementById('messageAudio');
+            if (audio) {
+                audio.load();
+                audio.play().catch(error => {
+                    console.log('Audio play failed:', error);
+                });
+            }
+        }
+
+        function showFinalVideo() {
+            // Stop background audio if playing
+            const messageAudio = document.getElementById('messageAudio');
+            if (messageAudio) {
+                messageAudio.pause();
+                messageAudio.currentTime = 0;
+            }
+            
+            // Stop and hide the background video
+            const bgVideo = document.getElementById('backgroundVideo');
+            bgVideo.pause();
+            bgVideo.currentTime = 0;
+            bgVideo.style.display = 'none';
+            
+            // Hide all other elements
+            document.getElementById('overlay').classList.remove('show');
+            document.getElementById('messagePopup').classList.remove('show');
+            document.getElementById('envelopeScreen').classList.add('hidden');
+            document.querySelector('.overlay-gradient').style.display = 'none';
+            
+            // Show and play final video with its own audio
+            document.getElementById('finalVideoScreen').classList.remove('hidden');
+            const finalVideo = document.getElementById('finalVideo');
+            finalVideo.muted = false;
+            finalVideo.volume = 1;
+            finalVideo.play();
+        }
+
+        // Ensure voices are loaded for text-to-speech
+        window.speechSynthesis.onvoiceschanged = () => {
+            speechSynthesis.getVoices();
+        };
+
+        // Ensure background video and audio loop properly
+        document.getElementById('backgroundVideo').addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
+    </script>
+</body>
+</html>
